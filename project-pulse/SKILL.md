@@ -41,6 +41,15 @@ public", "webhook-only entitlement"). You'll hand this to each repo's agent as *
 verify against real code, not facts to assume true** — the whole point of the audit is
 catching where reality has drifted from the docs, not restating the docs.
 
+A project can have just one repo. When it does, skip straight to a single agent and skip
+step 3 (there's nothing to cross-reference) — build the dashboard as one card, no
+release-readiness rollup at the top. Don't force a rollup section with nothing in it, and
+don't lower the bar on the single repo's report just because there's no second repo to
+contrast it against: an audit prompt that pushes an agent to look past the README's own
+disclosures (a real single-repo run found two undisclosed risks — unencrypted screenshot
+storage and unauthenticated static file serving — sitting right next to a risk the project's
+own README already called out) is worth as much on one repo as on five.
+
 ### 2. Dispatch one agent per repo, in parallel
 
 Launch all of them in the same turn (Agent tool, `general-purpose`, no `fork` — these need
