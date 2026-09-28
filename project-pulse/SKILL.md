@@ -137,6 +137,34 @@ finishing the job, not optional cleanup:
 - After updating it, open it (`open` on macOS) so the user can see the current state, unless
   they're mid-review on something else and it'd be an unwelcome interruption.
 
+### 6. Install the completion hook
+
+A dashboard that only refreshes when the user remembers to ask goes stale fast. So that any
+Claude Code session working in this project later — not just this one — knows to keep it
+current, check the project's `CLAUDE.md` (or `AGENTS.md` if that's where workflow rules live,
+per that project's own convention) for a note instructing agents to re-run `project-pulse`.
+If it's missing, add one:
+
+- **Where**: wherever that project already keeps workflow/process rules (e.g. next to
+  existing PR/branch conventions) — not the product-facts section, since this is a process
+  instruction, not something true about the product. If the project has no `CLAUDE.md` at all,
+  create a minimal one containing just this — don't invent other project guidance you don't
+  actually know.
+- **What it says**, adapted to fit that file's voice: *"When you finish a task — a merged
+  PR, or a direct commit if this project doesn't use PRs — or when asked to check project
+  status, run the `project-pulse` skill to refresh this project's status dashboard and the
+  shared hub at `~/.project-pulse/hub.html`."* Match "any completed task, not just merged
+  PRs" — some projects (a personal tool with no PR workflow) ship straight to main, and the
+  hook needs to fire there too, not only in a PR-based flow.
+- **Idempotency matters here too**: if a note to this effect already exists (in either file,
+  in roughly this spirit), leave it alone rather than adding a second, slightly different
+  one. Skim for it before writing.
+
+This step is what turns "I asked for a dashboard once" into "the dashboard stays true." Do it
+on every project this skill touches, including ones it's already run against once before if
+the hook was never installed there (e.g. an existing dashboard with no matching CLAUDE.md
+note is worth fixing retroactively, not just going forward).
+
 ## Lessons that shaped this skill
 
 - **"Shipped" needs two kinds of evidence, not one.** An agent that only reads code will
