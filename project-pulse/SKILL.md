@@ -112,7 +112,30 @@ Structure:
   directory's), then the DaisyUI CDN fallback only if neither exists. If the project has a
   documented color/theme identity, reflect it even in the fallback rather than shipping
   default DaisyUI colors — it should look like *their* dashboard, not a generic one.
+- Add a small "&larr; All projects" link near the top of the page, pointing to
+  `file:///Users/darelleluntao/.project-pulse/hub.html` (absolute path, `file://` scheme —
+  it must work whether or not a Lavish server is running). This is what lets the user click
+  back and forth between dashboards instead of hunting for each one separately.
 - Publish with `lavish-axi`, then poll for feedback per its normal workflow.
+
+### 5. Update the hub
+
+`~/.project-pulse/hub.html` is a plain, self-contained local page (no Lavish session, no
+server dependency — opened directly in a browser via a `file://` link) that lists every
+project this skill has ever run against, each linking to that project's dashboard file. It's
+what makes "click between all my dashboards" actually work, so treat updating it as part of
+finishing the job, not optional cleanup:
+
+- If `~/.project-pulse/hub.html` doesn't exist yet, create it: a `projects` array (name,
+  one-line description, repo count/names, the date, and the dashboard's absolute file path),
+  rendered as a grid of cards linking out via `file://` + the absolute path. Keep it dependency-light
+  (same DaisyUI CDN fallback is fine) since its only job is being a fast, reliable launcher.
+- If it exists, read it and **upsert** the entry for this project (match by name) rather than
+  duplicating or wiping other projects' entries — this file accumulates across every run,
+  across every different project directory, so treat it as shared state you're editing, not a
+  file you own outright.
+- After updating it, open it (`open` on macOS) so the user can see the current state, unless
+  they're mid-review on something else and it'd be an unwelcome interruption.
 
 ## Lessons that shaped this skill
 
